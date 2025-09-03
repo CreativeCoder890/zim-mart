@@ -93,8 +93,8 @@ export async function POST(req: NextRequest) {
 			const msg = `Zim Mart: Order ${order.order_number}\nName: ${buyer_name}\nTotal: $${total.toFixed(2)} USD\nPayment: ${payment_method}\nWe will contact you to confirm.`;
 			if (toBuyer) await sendWhatsAppMessage({ toE164: toBuyer, message: msg });
 			if (adminPhone) await sendWhatsAppMessage({ toE164: adminPhone, message: `New order ${order.order_number} - $${total.toFixed(2)} USD` });
-		} catch (e) {
-			console.warn('WhatsApp send skipped/failed', (e as any)?.message);
+		} catch (e: unknown) {
+			console.warn('WhatsApp send skipped/failed', e instanceof Error ? e.message : String(e));
 		}
 
 		return NextResponse.json({
