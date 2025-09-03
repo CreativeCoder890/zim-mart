@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { addToCart } from '@/src/lib/cart';
+import { addToCart } from '@/lib/cart';
 import { getPublicSupabaseEnv } from '@/lib/env';
 
 async function fetchProduct(slug: string) {
