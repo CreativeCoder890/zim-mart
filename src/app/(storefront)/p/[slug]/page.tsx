@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { addToCart } from '@/lib/cart';
 import { getPublicSupabaseEnv } from '@/lib/env';
 
@@ -38,7 +39,11 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
 	return (
 		<div className="max-w-3xl mx-auto p-4">
 			<h1 className="text-2xl font-semibold mb-2">{product.name}</h1>
-			{img && <img src={img} alt={product.name} className="w-full max-w-md rounded mb-4" />}
+			{img && (
+				<div className="w-full max-w-md mb-4 relative aspect-[4/3]">
+					<Image src={img} alt={product.name} fill className="object-cover rounded" />
+				</div>
+			)}
 			<p className="mb-2">${Number(product.price_usd).toFixed(2)} USD</p>
 			<p className="mb-4 text-sm text-gray-600">{product.description}</p>
 			<div className="flex items-center gap-2 mb-4">
