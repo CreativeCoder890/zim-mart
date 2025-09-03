@@ -39,7 +39,7 @@ export default function CheckoutPage() {
 			});
 			const data = await res.json() as { order_number: number; total_usd: number } | { error: string };
 			if (!res.ok) throw new Error((data as { error: string }).error || 'Failed');
-			setResult(data);
+			setResult(data as { order_number: number; total_usd: number });
 			clearCart();
 		} catch (e: unknown) {
 			alert(e instanceof Error ? e.message : 'Unknown error');

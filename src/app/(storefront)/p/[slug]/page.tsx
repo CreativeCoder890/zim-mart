@@ -1,8 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { addToCart } from '@/lib/cart';
 import { getPublicSupabaseEnv } from '@/lib/env';
+
+type Product = { id: string; name: string; price_usd: number; description?: string; images: { url?: string }[]; supplier_id: string };
 
 async function fetchProduct(slug: string) {
 	const { url, anon } = getPublicSupabaseEnv();
@@ -14,17 +17,17 @@ async function fetchProduct(slug: string) {
 		cache: 'no-store',
 	});
 	const data = await res.json();
-	return data?.[0];
+	return data?.[0] as Product | undefined;
 }
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
 	const { slug } = params;
-	const [product, setProduct] = useState<{ id: string; name: string; price_usd: number; description?: string; images: any[]; supplier_id: string } | null>(null);
+	const [product, setProduct] = useState<Product | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [qty, setQty] = useState<number>(1);
 
 	useEffect(() => {
-		fetchProduct(slug).then(setProduct).catch((e) => setError(e.message));
+		fetchProduct(slug).then((p) => setProduct(p ?? null)).catch((e) => setError(e.message));
 	}, [slug]);
 
 	if (error) return <div className="p-4 text-sm">{error}</div>;
@@ -41,7 +44,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
 				<input type="number" className="border p-2 w-20" min={1} value={qty} onChange={(e) => setQty(parseInt(e.target.value || '1', 10))} />
 				<button onClick={() => addToCart({ productId: product.id, name: product.name, priceUsd: Number(product.price_usd), quantity: qty, imageUrl: img, supplierId: product.supplier_id })} className="bg-black text-white px-4 py-2 rounded">Add to cart</button>
 			</div>
-			<a href="/checkout" className="text-blue-600 underline">Go to checkout</a>
+			<Link href="/checkout" className="text-blue-600 underline">Go to checkout</Link>
 		</div>
 	);
 }
