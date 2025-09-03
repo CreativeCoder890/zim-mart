@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
 		.select()
 		.single();
 
-	const makeProduct = (idx: number, catSlug: string) => ({
+	const makeProduct = (idx: number) => ({
 		supplier_id: supplier.id,
 		name: `Demo Product ${idx}`,
 		slug: `demo-product-${idx}`,
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
 	const catMap = new Map(cats?.map((c) => [c.slug, c.id]));
 
 	const products = Array.from({ length: 20 }).map((_, i) => {
-		const p = makeProduct(i + 1, categories[i % categories.length].slug);
+		const p = makeProduct(i + 1);
 		return { ...p, category_id: catMap.get(categories[i % categories.length].slug)! };
 	});
 

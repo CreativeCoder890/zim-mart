@@ -21,7 +21,7 @@ async function fetchCategoryProducts(slug: string) {
 
 export default function CategoryPage({ params }: { params: { slug: string } }) {
 	const { slug } = params;
-	const [products, setProducts] = useState<any[]>([]);
+	const [products, setProducts] = useState<{ id: string; name: string; price_usd: number; slug: string }[]>([]);
 	const [error, setError] = useState<string | null>(null);
 	useEffect(() => {
 		fetchCategoryProducts(slug).then(setProducts).catch((e) => setError(e.message));

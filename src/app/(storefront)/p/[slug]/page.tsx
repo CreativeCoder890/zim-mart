@@ -19,7 +19,7 @@ async function fetchProduct(slug: string) {
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
 	const { slug } = params;
-	const [product, setProduct] = useState<any>(null);
+	const [product, setProduct] = useState<{ id: string; name: string; price_usd: number; description?: string; images: any[]; supplier_id: string } | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [qty, setQty] = useState<number>(1);
 

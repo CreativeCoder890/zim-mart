@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import { getCart, clearCart } from '@/lib/cart';
 
 export default function CheckoutPage() {
@@ -11,7 +12,7 @@ export default function CheckoutPage() {
 	const [address, setAddress] = useState('');
 	const [paymentMethod, setPaymentMethod] = useState<'COD' | 'EcoCash' | 'ZIPIT'>('COD');
 	const [placing, setPlacing] = useState(false);
-	const [result, setResult] = useState<any>(null);
+	const [result, setResult] = useState<{ order_number: number; total_usd: number } | null>(null);
 	const subtotal = useMemo(() => cart.reduce((s, i) => s + i.priceUsd * i.quantity, 0), [cart]);
 	const deliveryFee = 3;
 	const total = subtotal + deliveryFee;
@@ -36,12 +37,12 @@ export default function CheckoutPage() {
 					items,
 				}),
 			});
-			const data = await res.json();
-			if (!res.ok) throw new Error(data.error || 'Failed');
+			const data = await res.json() as { order_number: number; total_usd: number } | { error: string };
+			if (!res.ok) throw new Error((data as { error: string }).error || 'Failed');
 			setResult(data);
 			clearCart();
-		} catch (e: any) {
-			alert(e.message);
+		} catch (e: unknown) {
+			alert(e instanceof Error ? e.message : 'Unknown error');
 		} finally {
 			setPlacing(false);
 		}
@@ -71,7 +72,7 @@ export default function CheckoutPage() {
 						<p>ZIPIT ${total.toFixed(2)} to Account 123456789, Steward Bank. Use order number as reference.</p>
 					</div>
 				)}
-				<a className="text-blue-600 underline mt-6 inline-block" href="/">Continue shopping</a>
+				<Link className="text-blue-600 underline mt-6 inline-block" href="/">Continue shopping</Link>
 			</div>
 		);
 	}

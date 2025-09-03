@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 
 export default function AdminProducts() {
-	const [products, setProducts] = useState<any[]>([]);
+	const [products, setProducts] = useState<{ id: string; name: string; price_usd: number; stock: number }[]>([]);
 	useEffect(() => {
 		(async () => {
 			const url = process.env.NEXT_PUBLIC_SUPABASE_URL as string;

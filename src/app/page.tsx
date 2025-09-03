@@ -20,7 +20,7 @@ export default async function Home() {
 					<Link className="underline" href="/checkout">Cart/Checkout</Link>
 				</div>
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-					{featured.map((p: any) => (
+					{featured.map((p: { id: string; name: string; price_usd: number; slug: string }) => (
 						<Link key={p.id} href={`/p/${p.slug}`} className="border rounded p-3 block">
 							<div className="font-medium mb-1">{p.name}</div>
 							<div className="text-sm">${Number(p.price_usd).toFixed(2)}</div>
@@ -29,11 +29,11 @@ export default async function Home() {
 				</div>
 			</div>
 		);
-	} catch (e: any) {
+	} catch (e: unknown) {
 		return (
 			<div className="max-w-xl mx-auto p-6">
 				<h1 className="text-xl font-semibold mb-2">Setup required</h1>
-				<p className="text-sm">{e.message}. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to .env.local and restart dev server.</p>
+				<p className="text-sm">{e instanceof Error ? e.message : 'Unknown error'}. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to .env.local and restart dev server.</p>
 			</div>
 		);
 	}
