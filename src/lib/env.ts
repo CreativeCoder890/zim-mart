@@ -10,3 +10,5 @@ export function getPublicSupabaseEnv() {
 	}
 	return { url, anon } as { url: string; anon: string };
 }
+
+

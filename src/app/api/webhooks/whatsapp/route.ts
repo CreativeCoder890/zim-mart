@@ -18,3 +18,5 @@ export async function POST(req: NextRequest) {
 	console.log('WhatsApp webhook', JSON.stringify(body));
 	return NextResponse.json({ received: true });
 }
+
+
